@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="720" viewBox="0 0 620 720">
+  <defs>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      .label { font-size: 12px; fill: #374151; font-weight: 600; }
+      .value { font-size: 13px; fill: #1a1a1a; }
+      .hint { font-size: 12px; fill: #6b7280; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="620" height="720" fill="#f9fafb"/>
+
+  <!-- Title -->
+  <text x="60" y="45" fill="#6366f1" font-size="22" font-weight="700">aiom Settings</text>
+
+  <!-- Active Configuration -->
+  <text x="60" y="90" fill="#374151" font-size="16" font-weight="600">Active Configuration</text>
+
+  <!-- Provider select -->
+  <text x="60" y="118" class="label">Provider</text>
+  <rect x="60" y="124" width="240" height="34" rx="6" fill="white" stroke="#d1d5db"/>
+  <text x="72" y="146" class="value">Anthropic</text>
+
+  <!-- Model select -->
+  <text x="320" y="118" class="label">Model</text>
+  <rect x="320" y="124" width="240" height="34" rx="6" fill="white" stroke="#d1d5db"/>
+  <text x="332" y="146" class="value">claude-sonnet-4-20250514</text>
+
+  <!-- Separator -->
+  <line x1="60" y1="178" x2="560" y2="178" stroke="#e5e7eb"/>
+
+  <!-- Providers -->
+  <text x="60" y="208" fill="#374151" font-size="16" font-weight="600">Providers</text>
+  <rect x="440" y="192" width="120" height="26" rx="6" fill="#6366f1"/>
+  <text x="450" y="210" fill="white" font-size="12" font-weight="600">+ Add Provider</text>
+
+  <!-- Provider card 1 (collapsed) -->
+  <rect x="60" y="230" width="500" height="44" rx="8" fill="white" stroke="#e5e7eb"/>
+  <text x="92" y="257" fill="#374151" font-size="14" font-weight="600">▶  OpenAI</text>
+  <rect x="192" y="244" width="52" height="20" rx="4" fill="#e0e7ff"/>
+  <text x="200" y="258" fill="#4338ca" font-size="11" font-weight="500">openai</text>
+  <rect x="488" y="242" width="56" height="24" rx="4" fill="#ef4444"/>
+  <text x="498" y="259" fill="white" font-size="12" font-weight="600">Delete</text>
+
+  <!-- Provider card 2 (expanded) -->
+  <rect x="60" y="288" width="500" height="230" rx="8" fill="white" stroke="#e5e7eb"/>
+  <text x="92" y="315" fill="#374151" font-size="14" font-weight="600">▼  My Anthropic</text>
+  <rect x="242" y="300" width="72" height="20" rx="4" fill="#e0e7ff"/>
+  <text x="250" y="314" fill="#4338ca" font-size="11" font-weight="500">anthropic</text>
+  <rect x="488" y="300" width="56" height="24" rx="4" fill="#ef4444"/>
+  <text x="498" y="317" fill="white" font-size="12" font-weight="600">Delete</text>
+
+  <!-- Base URL field -->
+  <text x="78" y="348" class="label">Base URL</text>
+  <rect x="78" y="354" width="466" height="30" rx="6" fill="white" stroke="#d1d5db"/>
+  <text x="88" y="374" font-size="12" fill="#1a1a1a">https://api.anthropic.com</text>
+
+  <!-- API Key field -->
+  <text x="78" y="404" class="label">API Key</text>
+  <rect x="78" y="410" width="466" height="30" rx="6" fill="white" stroke="#d1d5db"/>
+  <text x="88" y="430" font-size="13" fill="#1a1a1a">••••••••••••••••••••••••</text>
+  <text x="520" y="430" fill="#9ca3af" font-size="14">👁</text>
+
+  <!-- Models -->
+  <text x="78" y="462" class="label">Models</text>
+  <rect x="78" y="468" width="196" height="24" rx="4" fill="#f3f4f6" stroke="#d1d5db"/>
+  <text x="86" y="484" font-size="11" fill="#374151" font-family="monospace">claude-sonnet-4-20250514</text>
+  <text x="262" y="484" fill="#9ca3af" font-size="12">×</text>
+  <rect x="284" y="468" width="188" height="24" rx="4" fill="#f3f4f6" stroke="#d1d5db"/>
+  <text x="292" y="484" font-size="11" fill="#374151" font-family="monospace">claude-haiku-4-5-20251001</text>
+  <text x="460" y="484" fill="#9ca3af" font-size="12">×</text>
+
+  <!-- Separator -->
+  <line x1="60" y1="536" x2="560" y2="536" stroke="#e5e7eb"/>
+
+  <!-- Variables -->
+  <text x="60" y="566" fill="#374151" font-size="16" font-weight="600">Variables</text>
+  <rect x="440" y="550" width="120" height="26" rx="6" fill="#6366f1"/>
+  <text x="450" y="568" fill="white" font-size="12" font-weight="600">+ Add Variable</text>
+
+  <text x="60" y="594" class="hint">Define variables to use as ${VAR_NAME} in configs.</text>
+
+  <!-- Variable row -->
+  <rect x="60" y="606" width="180" height="30" rx="6" fill="white" stroke="#d1d5db"/>
+  <text x="72" y="626" font-size="12" fill="#1a1a1a">API_TOKEN</text>
+  <rect x="250" y="606" width="260" height="30" rx="6" fill="white" stroke="#d1d5db"/>
+  <text x="262" y="626" font-size="13" fill="#1a1a1a">••••••••••••••</text>
+  <text x="488" y="626" fill="#9ca3af" font-size="14">👁</text>
+  <rect x="520" y="606" width="30" height="30" rx="6" fill="#f3f4f6" stroke="#d1d5db"/>
+  <text x="530" y="626" fill="#9ca3af" font-size="14">×</text>
+
+  <!-- Separator -->
+  <line x1="60" y1="656" x2="560" y2="656" stroke="#e5e7eb"/>
+
+  <!-- Save button -->
+  <rect x="60" y="676" width="120" height="36" rx="6" fill="#6366f1"/>
+  <text x="84" y="700" fill="white" font-size="14" font-weight="600">Save All</text>
+  <text x="196" y="700" fill="#059669" font-size="14" font-weight="600">Saved!</text>
+</svg>

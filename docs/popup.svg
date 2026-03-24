@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <defs>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="500" rx="12" fill="#f9fafb" stroke="#d1d5db"/>
+
+  <!-- Header -->
+  <rect width="400" height="44" rx="12" fill="#6366f1"/>
+  <rect y="24" width="400" height="20" fill="#6366f1"/>
+  <text x="14" y="29" fill="white" font-size="16" font-weight="700">aiom</text>
+  <text x="62" y="29" fill="#c7d2fe" font-size="11">OpenAI / gpt-4o-mini</text>
+  <rect x="290" y="8" width="46" height="28" rx="4" fill="rgba(255,255,255,0.2)"/>
+  <text x="298" y="27" fill="white" font-size="12">Clear</text>
+  <rect x="344" y="8" width="42" height="28" rx="4" fill="rgba(255,255,255,0.2)"/>
+  <text x="358" y="28" fill="white" font-size="15">⚙</text>
+
+  <!-- User message 1 -->
+  <rect x="130" y="62" width="256" height="36" rx="12" fill="#6366f1"/>
+  <text x="146" y="85" fill="white" font-size="13">What is a closure in JavaScript?</text>
+
+  <!-- Assistant message -->
+  <rect x="14" y="112" width="320" height="152" rx="12" fill="#e5e7eb"/>
+  <text x="26" y="134" fill="#1a1a1a" font-size="13">A closure is a function that remembers</text>
+  <text x="26" y="152" fill="#1a1a1a" font-size="13">variables from the scope where it was</text>
+  <text x="26" y="170" fill="#1a1a1a" font-size="13">created, even after that scope has</text>
+  <text x="26" y="188" fill="#1a1a1a" font-size="13">finished executing.</text>
+  <text x="26" y="214" fill="#1a1a1a" font-size="13">Think of it as a function with a</text>
+  <text x="26" y="232" fill="#1a1a1a" font-size="13">"backpack" of variables it can still</text>
+  <text x="26" y="250" fill="#1a1a1a" font-size="13">access.</text>
+
+  <!-- User message 2 -->
+  <rect x="190" y="278" width="196" height="36" rx="12" fill="#6366f1"/>
+  <text x="206" y="301" fill="white" font-size="13">Give me an example</text>
+
+  <!-- Thinking indicator -->
+  <rect x="14" y="328" width="110" height="32" rx="12" fill="#e5e7eb"/>
+  <text x="26" y="349" fill="#6b7280" font-size="13" font-style="italic">Thinking...</text>
+
+  <!-- Footer -->
+  <rect y="452" width="400" height="48" rx="0" fill="white"/>
+  <line x1="0" y1="452" x2="400" y2="452" stroke="#e5e7eb"/>
+  <rect x="14" y="462" width="304" height="30" rx="8" fill="white" stroke="#d1d5db"/>
+  <text x="24" y="482" fill="#9ca3af" font-size="13">Type a message...</text>
+  <rect x="328" y="462" width="58" height="30" rx="8" fill="#ef4444"/>
+  <text x="342" y="482" fill="white" font-size="13" font-weight="600">Stop</text>
+
+  <!-- Bottom corners -->
+  <rect y="488" width="400" height="12" rx="0" fill="white"/>
+  <rect y="488" width="12" height="12" fill="white"/>
+  <rect x="388" y="488" width="12" height="12" fill="white"/>
+</svg>
