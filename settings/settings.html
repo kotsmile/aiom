@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>aiom — Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="container">
+    <h1>aiom Settings</h1>
+
+    <!-- Active selection -->
+    <section class="active-section">
+      <h2>Active Configuration</h2>
+      <div class="row">
+        <div class="field">
+          <label for="active-provider">Provider</label>
+          <select id="active-provider"></select>
+        </div>
+        <div class="field">
+          <label for="active-model">Model</label>
+          <select id="active-model"></select>
+        </div>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- Provider list -->
+    <section>
+      <div class="section-header">
+        <h2>Providers</h2>
+        <button id="btn-add-provider" class="btn-small">+ Add Provider</button>
+      </div>
+      <div id="provider-list"></div>
+    </section>
+
+    <hr>
+
+    <!-- Variables -->
+    <section>
+      <div class="section-header">
+        <h2>Variables</h2>
+        <button id="btn-add-var" class="btn-small">+ Add Variable</button>
+      </div>
+      <p class="hint">Define variables to use as <code>${VAR_NAME}</code> in API keys, base URLs, and headers.</p>
+      <div id="variables-list"></div>
+    </section>
+
+    <hr>
+
+    <!-- Import JSON config -->
+    <section>
+      <h2>Import JSON Config</h2>
+      <p class="hint">Paste a JSON config to bulk-import providers. Supports opencode format and custom format:</p>
+      <pre class="hint-code">// opencode format (auto-detected)
+{ "provider": { "id": { "name": "...", "npm": "@ai-sdk/openai-compatible",
+    "options": { "baseURL": "...", "apiKey": "..." },
+    "models": { "model-id": { "name": "..." } } } } }
+
+// custom format
+{ "providers": { "id": { "name": "...", "type": "openai",
+    "baseUrl": "...", "apiKey": "...",
+    "models": ["model-1", "model-2"] } } }</pre>
+      <textarea id="json-import" rows="6" placeholder='Paste JSON here...'></textarea>
+      <button id="btn-import" class="btn-secondary">Import</button>
+      <span id="import-status" class="status hidden"></span>
+    </section>
+
+    <div class="save-bar">
+      <button id="btn-save">Save All</button>
+      <span id="status" class="status hidden">Saved!</span>
+    </div>
+  </div>
+
+  <script type="module" src="settings.js"></script>
+</body>
+</html>
