@@ -1,4 +1,4 @@
-import type { Settings, ChatMessage } from '../types'
+import type { Settings, Chat } from '../types'
 
 const DEFAULT_SETTINGS: Settings = {
   providers: {
@@ -22,6 +22,7 @@ const DEFAULT_SETTINGS: Settings = {
   activeProvider: 'openai',
   activeModel: 'gpt-4o-mini',
   variables: {},
+  systemMessage: '',
 }
 
 export async function getSettings(): Promise<Settings> {
@@ -38,27 +39,50 @@ export async function saveSettings(settings: Settings): Promise<void> {
   await chrome.storage.local.set({ settings })
 }
 
-export async function getChatHistory(): Promise<ChatMessage[]> {
-  const { chatHistory } = await chrome.storage.local.get('chatHistory')
-  return chatHistory || []
+// --- Chats ---
+
+export function newChatId(): string {
+  return `chat-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
 }
 
-export async function saveChatHistory(messages: ChatMessage[]): Promise<void> {
-  await chrome.storage.local.set({ chatHistory: messages })
+export async function getChats(): Promise<Chat[]> {
+  const { chats } = await chrome.storage.local.get('chats')
+  return chats || []
 }
 
-export async function clearChatHistory(): Promise<void> {
-  await chrome.storage.local.remove('chatHistory')
+export async function saveChats(chats: Chat[]): Promise<void> {
+  await chrome.storage.local.set({ chats })
 }
 
-export async function getPendingMessage(): Promise<string | null> {
+export async function getActiveChatId(): Promise<string | null> {
+  const { activeChatId } = await chrome.storage.local.get('activeChatId')
+  return activeChatId || null
+}
+
+export async function saveActiveChatId(id: string): Promise<void> {
+  await chrome.storage.local.set({ activeChatId: id })
+}
+
+// --- Pending message ---
+
+export interface PendingMessage {
+  text: string
+  title: string
+  systemPrompt?: string
+}
+
+export async function getPendingMessage(): Promise<PendingMessage | null> {
   const { pendingMessage } = await chrome.storage.local.get('pendingMessage')
-  return pendingMessage || null
+  if (!pendingMessage) return null
+  if (typeof pendingMessage === 'string') return { text: pendingMessage, title: pendingMessage.slice(0, 40) }
+  return pendingMessage
 }
 
 export async function clearPendingMessage(): Promise<void> {
   await chrome.storage.local.remove('pendingMessage')
 }
+
+// --- Helpers ---
 
 export function resolveVars(str: string, variables: Record<string, string>): string {
   if (!str) return str

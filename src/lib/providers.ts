@@ -1,11 +1,55 @@
 import type { ChatMessage, Settings, Provider } from '../types'
 import { resolveVars } from './storage'
 
+interface StreamOptions {
+  signal?: AbortSignal
+  onChunk: (text: string) => void
+}
+
+async function readSSEStream(
+  res: Response,
+  extractContent: (parsed: any) => string | null,
+  onChunk: (text: string) => void,
+): Promise<string> {
+  const reader = res.body!.getReader()
+  const decoder = new TextDecoder()
+  let full = ''
+  let buffer = ''
+
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) break
+
+    buffer += decoder.decode(value, { stream: true })
+    const lines = buffer.split('\n')
+    buffer = lines.pop() || ''
+
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue
+      const data = line.slice(6).trim()
+      if (data === '[DONE]') continue
+
+      try {
+        const parsed = JSON.parse(data)
+        const content = extractContent(parsed)
+        if (content) {
+          full += content
+          onChunk(full)
+        }
+      } catch {
+        // skip malformed chunks
+      }
+    }
+  }
+
+  return full
+}
+
 async function callOpenAICompatible(
   messages: { role: string; content: string }[],
   provider: Provider,
   model: string,
-  signal?: AbortSignal,
+  options: StreamOptions,
 ): Promise<string> {
   const url = `${provider.baseUrl.replace(/\/$/, '')}/chat/completions`
 
@@ -20,8 +64,8 @@ async function callOpenAICompatible(
   const res = await fetch(url, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ model, messages }),
-    signal,
+    body: JSON.stringify({ model, messages, stream: true }),
+    signal: options.signal,
   })
 
   if (!res.ok) {
@@ -29,15 +73,19 @@ async function callOpenAICompatible(
     throw new Error(err.error?.message || `${provider.name} error ${res.status}`)
   }
 
-  const data = await res.json()
-  return data.choices[0].message.content
+  return readSSEStream(
+    res,
+    (parsed) => parsed.choices?.[0]?.delta?.content || null,
+    options.onChunk,
+  )
 }
 
 async function callAnthropicCompatible(
   messages: { role: string; content: string }[],
   provider: Provider,
   model: string,
-  signal?: AbortSignal,
+  options: StreamOptions,
+  systemMessage?: string,
 ): Promise<string> {
   const url = `${provider.baseUrl.replace(/\/$/, '')}/v1/messages`
 
@@ -54,8 +102,14 @@ async function callAnthropicCompatible(
   const res = await fetch(url, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ model, max_tokens: 4096, messages }),
-    signal,
+    body: JSON.stringify({
+      model,
+      max_tokens: 4096,
+      messages,
+      stream: true,
+      ...(systemMessage ? { system: systemMessage } : {}),
+    }),
+    signal: options.signal,
   })
 
   if (!res.ok) {
@@ -63,14 +117,22 @@ async function callAnthropicCompatible(
     throw new Error(err.error?.message || `${provider.name} error ${res.status}`)
   }
 
-  const data = await res.json()
-  return data.content[0].text
+  return readSSEStream(
+    res,
+    (parsed) => {
+      if (parsed.type === 'content_block_delta') {
+        return parsed.delta?.text || null
+      }
+      return null
+    },
+    options.onChunk,
+  )
 }
 
 export async function sendMessage(
   chatHistory: ChatMessage[],
   settings: Settings,
-  options?: { signal?: AbortSignal },
+  options: { signal?: AbortSignal; onChunk: (text: string) => void },
 ): Promise<string> {
   const { providers, activeProvider, activeModel, variables } = settings
   const rawProvider = providers[activeProvider]
@@ -95,9 +157,15 @@ export async function sendMessage(
 
   const messages = chatHistory.map(({ role, content }) => ({ role, content }))
 
+  const systemMessage = settings.systemMessage?.trim() || undefined
+
   if (provider.type === 'anthropic') {
-    return callAnthropicCompatible(messages, provider, activeModel, options?.signal)
+    return callAnthropicCompatible(messages, provider, activeModel, options, systemMessage)
   } else {
-    return callOpenAICompatible(messages, provider, activeModel, options?.signal)
+    // OpenAI-compatible: prepend as system role message
+    if (systemMessage) {
+      messages.unshift({ role: 'system', content: systemMessage })
+    }
+    return callOpenAICompatible(messages, provider, activeModel, options)
   }
 }

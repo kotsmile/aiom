@@ -11,13 +11,13 @@ chrome.runtime.onInstalled.addListener(() => {
   })
 })
 
-async function openWithMessage(text) {
-  await chrome.storage.local.set({ pendingMessage: text })
+async function openWithMessage(text, title) {
+  await chrome.storage.local.set({ pendingMessage: { text, title } })
   chrome.windows.create({
     url: chrome.runtime.getURL('popup.html'),
     type: 'popup',
-    width: 420,
-    height: 520,
+    width: 480,
+    height: 600,
   })
 }
 
@@ -25,10 +25,20 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
   if (!info.selectionText) return
 
   if (info.menuItemId === 'send-to-aiom') {
-    await openWithMessage(info.selectionText)
+    await openWithMessage(info.selectionText, info.selectionText.slice(0, 40))
   } else if (info.menuItemId === 'explain-aiom') {
-    await openWithMessage(
-      `Explain the following term or concept in simple words:\n\n"${info.selectionText}"`
-    )
+    await chrome.storage.local.set({
+      pendingMessage: {
+        text: info.selectionText,
+        title: info.selectionText.slice(0, 40),
+        systemPrompt: 'Explain the following term or concept in simple words:',
+      },
+    })
+    chrome.windows.create({
+      url: chrome.runtime.getURL('popup.html'),
+      type: 'popup',
+      width: 480,
+      height: 600,
+    })
   }
 })

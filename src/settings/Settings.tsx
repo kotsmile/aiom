@@ -104,6 +104,21 @@ export function Settings() {
             </select>
           </div>
         </div>
+
+        {/* System message */}
+        <div className="mt-4">
+          <label className="block text-[13px] font-semibold text-gray-600 mb-1">System Message</label>
+          <p className="text-[12px] text-gray-500 mb-1.5">
+            Sent with every chat as context (e.g. language preference, role, style).
+          </p>
+          <textarea
+            value={settings.systemMessage}
+            onChange={(e) => updateSettings({ systemMessage: e.target.value })}
+            rows={3}
+            placeholder='e.g. "Отвечай мне на русском" or "You are a senior engineer, be concise"'
+            className="w-full rounded-md border border-gray-300 px-2.5 py-2 text-sm resize-y focus:border-indigo-500 focus:outline-none"
+          />
+        </div>
       </section>
 
       <hr className="border-gray-200 my-6" />
