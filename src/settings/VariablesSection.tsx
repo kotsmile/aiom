@@ -27,16 +27,16 @@ export function VariablesSection({ variables, onChange }: Props) {
   return (
     <section>
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-base font-semibold text-gray-700">Variables</h2>
+        <h2 className="text-base font-semibold text-zinc-700 dark:text-zinc-200">Variables</h2>
         <button
           onClick={add}
-          className="bg-indigo-500 text-white border-none px-3 py-1 rounded text-[13px] font-semibold cursor-pointer hover:bg-indigo-600"
+          className="bg-orange-500 text-white border-none px-3 py-1 rounded text-[13px] font-semibold cursor-pointer hover:bg-orange-600"
         >
           + Add Variable
         </button>
       </div>
-      <p className="text-[13px] text-gray-500 mb-2">
-        Define variables to use as <code className="bg-gray-100 px-1 rounded text-xs">{`\${VAR_NAME}`}</code> in API keys, base URLs, and headers.
+      <p className="text-[13px] text-zinc-500 dark:text-zinc-400 mb-2">
+        Define variables to use as <code className="bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-200 px-1 rounded text-xs">{`\${VAR_NAME}`}</code> in API keys, base URLs, and headers.
       </p>
       <div className="space-y-1.5">
         {entries.map(([key, val], i) => (
@@ -46,7 +46,7 @@ export function VariablesSection({ variables, onChange }: Props) {
               value={key}
               onChange={(e) => update(i, e.target.value, val)}
               placeholder="VAR_NAME"
-              className="flex-1 rounded-md border border-gray-300 px-2 py-1 text-xs focus:border-indigo-500 focus:outline-none"
+              className="flex-1 rounded-md border border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500 px-2 py-1 text-xs focus:border-orange-500 focus:outline-none"
             />
             <div className="flex-1">
               <PasswordInput
@@ -58,7 +58,7 @@ export function VariablesSection({ variables, onChange }: Props) {
             </div>
             <button
               onClick={() => remove(i)}
-              className="bg-gray-100 text-gray-500 border border-gray-300 px-2 py-1 rounded text-xs cursor-pointer hover:bg-red-50 hover:text-red-500 hover:border-red-500"
+              className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-700 px-2 py-1 rounded text-xs cursor-pointer hover:bg-red-50 hover:text-red-500 hover:border-red-500 dark:hover:bg-red-950 dark:hover:text-red-300 dark:hover:border-red-500"
             >
               ×
             </button>

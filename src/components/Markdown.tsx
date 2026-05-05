@@ -20,12 +20,12 @@ export function Markdown({ children }: Props) {
         h2: ({ children }) => <h2 className="text-sm font-bold mb-1">{children}</h2>,
         h3: ({ children }) => <h3 className="text-sm font-semibold mb-1">{children}</h3>,
         blockquote: ({ children }) => (
-          <blockquote className="border-l-2 border-gray-400 pl-2 my-1 text-gray-600 italic">
+          <blockquote className="border-l-2 border-zinc-400 dark:border-zinc-500 pl-2 my-1 text-zinc-600 dark:text-zinc-400 italic">
             {children}
           </blockquote>
         ),
         a: ({ href, children }) => (
-          <a href={href} target="_blank" rel="noopener noreferrer" className="text-indigo-600 underline">
+          <a href={href} target="_blank" rel="noopener noreferrer" className="text-orange-600 dark:text-orange-300 underline">
             {children}
           </a>
         ),
@@ -33,13 +33,13 @@ export function Markdown({ children }: Props) {
           const isBlock = className?.includes('language-')
           if (isBlock) {
             return (
-              <code className="block bg-gray-800 text-gray-100 rounded px-2.5 py-2 my-1 text-xs font-mono overflow-x-auto whitespace-pre">
+              <code className="block bg-zinc-800 text-zinc-100 dark:bg-zinc-950 rounded px-2.5 py-2 my-1 text-xs font-mono overflow-x-auto whitespace-pre">
                 {children}
               </code>
             )
           }
           return (
-            <code className="bg-gray-300/50 text-red-700 rounded px-1 py-0.5 text-xs font-mono">
+            <code className="bg-zinc-300/50 text-red-700 dark:bg-zinc-700/60 dark:text-red-300 rounded px-1 py-0.5 text-xs font-mono">
               {children}
             </code>
           )
@@ -49,14 +49,14 @@ export function Markdown({ children }: Props) {
           <table className="border-collapse text-xs my-1">{children}</table>
         ),
         th: ({ children }) => (
-          <th className="border border-gray-300 px-2 py-1 bg-gray-100 font-semibold text-left">
+          <th className="border border-zinc-300 dark:border-zinc-600 px-2 py-1 bg-zinc-100 dark:bg-zinc-800 font-semibold text-left">
             {children}
           </th>
         ),
         td: ({ children }) => (
-          <td className="border border-gray-300 px-2 py-1">{children}</td>
+          <td className="border border-zinc-300 dark:border-zinc-600 px-2 py-1">{children}</td>
         ),
-        hr: () => <hr className="border-gray-300 my-2" />,
+        hr: () => <hr className="border-zinc-300 dark:border-zinc-600 my-2" />,
       }}
     >
       {children}

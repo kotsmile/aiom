@@ -11,34 +11,34 @@ chrome.runtime.onInstalled.addListener(() => {
   })
 })
 
-async function openWithMessage(text, title) {
-  await chrome.storage.local.set({ pendingMessage: { text, title } })
-  chrome.windows.create({
-    url: chrome.runtime.getURL('popup.html'),
-    type: 'popup',
-    width: 480,
-    height: 600,
-  })
-}
+chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error) => console.error(error))
 
-chrome.contextMenus.onClicked.addListener(async (info) => {
+chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (!info.selectionText) return
 
+  let pendingMessage
   if (info.menuItemId === 'send-to-aiom') {
-    await openWithMessage(info.selectionText, info.selectionText.slice(0, 40))
+    pendingMessage = {
+      text: info.selectionText,
+      title: info.selectionText.slice(0, 40),
+    }
   } else if (info.menuItemId === 'explain-aiom') {
-    await chrome.storage.local.set({
-      pendingMessage: {
-        text: info.selectionText,
-        title: info.selectionText.slice(0, 40),
-        systemPrompt: 'Explain the following term or concept in simple words:',
-      },
-    })
-    chrome.windows.create({
-      url: chrome.runtime.getURL('popup.html'),
-      type: 'popup',
-      width: 480,
-      height: 600,
-    })
+    pendingMessage = {
+      text: info.selectionText,
+      title: info.selectionText.slice(0, 40),
+      systemPrompt: 'Explain the following term or concept in simple words:',
+    }
+  } else {
+    return
   }
+
+  // Open the side panel synchronously to preserve the user gesture, then write
+  // the pending message. Do not await before opening — chrome.sidePanel.open()
+  // requires a user gesture and `await` ends the gesture turn.
+  if (tab?.windowId !== undefined) {
+    chrome.sidePanel.open({ windowId: tab.windowId }).catch((error) => console.error(error))
+  }
+  chrome.storage.local.set({ pendingMessage })
 })

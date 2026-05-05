@@ -7,13 +7,19 @@ import { ImportSection } from './ImportSection'
 
 export function Settings() {
   const [settings, setSettings] = useState<SettingsType | null>(null)
+  const [savedSnapshot, setSavedSnapshot] = useState<string>('')
   const [status, setStatus] = useState<string | null>(null)
 
   useEffect(() => {
-    getSettings().then(setSettings)
+    getSettings().then((s) => {
+      setSettings(s)
+      setSavedSnapshot(JSON.stringify(s))
+    })
   }, [])
 
   if (!settings) return null
+
+  const dirty = JSON.stringify(settings) !== savedSnapshot
 
   const providers = settings.providers
   const activeProvider = providers[settings.activeProvider]
@@ -53,24 +59,50 @@ export function Settings() {
     const updated = { ...settings, providers: { ...providers, ...imported } }
     setSettings(updated)
     await saveSettings(updated)
+    setSavedSnapshot(JSON.stringify(updated))
   }
 
   const handleSave = async () => {
     await saveSettings(settings)
+    setSavedSnapshot(JSON.stringify(settings))
     setStatus('Saved!')
     setTimeout(() => setStatus(null), 2000)
   }
 
   return (
-    <div className="max-w-[600px] mx-auto py-10 px-5 font-sans">
-      <h1 className="text-[22px] font-bold text-indigo-500 mb-6">aiom Settings</h1>
+    <div className="max-w-[600px] mx-auto px-5 pb-10 font-sans">
+      {/* Sticky header with Save */}
+      <div className="sticky top-0 z-20 -mx-5 px-5 py-3 mb-6 flex items-center justify-between gap-3 bg-white/90 dark:bg-zinc-950/90 backdrop-blur border-b border-zinc-200 dark:border-zinc-800">
+        <h1 className="text-[22px] font-bold text-orange-500 dark:text-orange-300">aiom Settings</h1>
+        <div className="flex items-center gap-3">
+          {dirty && (
+            <span className="text-[12px] font-semibold text-orange-600 dark:text-orange-300">
+              Unsaved changes
+            </span>
+          )}
+          {status && (
+            <span className="text-[13px] font-semibold text-emerald-600">{status}</span>
+          )}
+          <button
+            onClick={handleSave}
+            disabled={!dirty}
+            className={
+              dirty
+                ? 'border-none px-5 py-2 rounded-md text-sm font-semibold cursor-pointer text-white bg-orange-500 hover:bg-orange-600 ring-2 ring-orange-300 dark:ring-orange-500/50 animate-pulse'
+                : 'border-none px-5 py-2 rounded-md text-sm font-semibold cursor-default text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800'
+            }
+          >
+            Save
+          </button>
+        </div>
+      </div>
 
       {/* Active config */}
       <section className="mb-6">
-        <h2 className="text-base font-semibold text-gray-700 mb-3">Active Configuration</h2>
+        <h2 className="text-base font-semibold text-zinc-700 dark:text-zinc-200 mb-3">Active Configuration</h2>
         <div className="flex gap-3">
           <div className="flex-1">
-            <label className="block text-[13px] font-semibold text-gray-600 mb-1">Provider</label>
+            <label className="block text-[13px] font-semibold text-zinc-600 dark:text-zinc-300 mb-1">Provider</label>
             <select
               value={settings.activeProvider}
               onChange={(e) => {
@@ -80,7 +112,7 @@ export function Settings() {
                   activeModel: newProvider?.models[0] || '',
                 })
               }}
-              className="w-full rounded-md border border-gray-300 px-2.5 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 px-2.5 py-2 text-sm focus:border-orange-500 focus:outline-none"
             >
               {Object.entries(providers).map(([id, p]) => (
                 <option key={id} value={id}>
@@ -90,11 +122,11 @@ export function Settings() {
             </select>
           </div>
           <div className="flex-1">
-            <label className="block text-[13px] font-semibold text-gray-600 mb-1">Model</label>
+            <label className="block text-[13px] font-semibold text-zinc-600 dark:text-zinc-300 mb-1">Model</label>
             <select
               value={settings.activeModel}
               onChange={(e) => updateSettings({ activeModel: e.target.value })}
-              className="w-full rounded-md border border-gray-300 px-2.5 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 px-2.5 py-2 text-sm focus:border-orange-500 focus:outline-none"
             >
               {models.map((m) => (
                 <option key={m} value={m}>
@@ -107,8 +139,8 @@ export function Settings() {
 
         {/* System message */}
         <div className="mt-4">
-          <label className="block text-[13px] font-semibold text-gray-600 mb-1">System Message</label>
-          <p className="text-[12px] text-gray-500 mb-1.5">
+          <label className="block text-[13px] font-semibold text-zinc-600 dark:text-zinc-300 mb-1">System Message</label>
+          <p className="text-[12px] text-zinc-500 dark:text-zinc-400 mb-1.5">
             Sent with every chat as context (e.g. language preference, role, style).
           </p>
           <textarea
@@ -116,20 +148,20 @@ export function Settings() {
             onChange={(e) => updateSettings({ systemMessage: e.target.value })}
             rows={3}
             placeholder='e.g. "Отвечай мне на русском" or "You are a senior engineer, be concise"'
-            className="w-full rounded-md border border-gray-300 px-2.5 py-2 text-sm resize-y focus:border-indigo-500 focus:outline-none"
+            className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500 px-2.5 py-2 text-sm resize-y focus:border-orange-500 focus:outline-none"
           />
         </div>
       </section>
 
-      <hr className="border-gray-200 my-6" />
+      <hr className="border-zinc-200 dark:border-zinc-700 my-6" />
 
       {/* Providers */}
       <section className="mb-2">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-gray-700">Providers</h2>
+          <h2 className="text-base font-semibold text-zinc-700 dark:text-zinc-200">Providers</h2>
           <button
             onClick={addProvider}
-            className="bg-indigo-500 text-white border-none px-3 py-1 rounded text-[13px] font-semibold cursor-pointer hover:bg-indigo-600"
+            className="bg-orange-500 text-white border-none px-3 py-1 rounded text-[13px] font-semibold cursor-pointer hover:bg-orange-600"
           >
             + Add Provider
           </button>
@@ -145,7 +177,7 @@ export function Settings() {
         ))}
       </section>
 
-      <hr className="border-gray-200 my-6" />
+      <hr className="border-zinc-200 dark:border-zinc-700 my-6" />
 
       {/* Variables */}
       <VariablesSection
@@ -153,21 +185,10 @@ export function Settings() {
         onChange={(variables) => updateSettings({ variables })}
       />
 
-      <hr className="border-gray-200 my-6" />
+      <hr className="border-zinc-200 dark:border-zinc-700 my-6" />
 
       {/* Import */}
       <ImportSection onImport={handleImport} />
-
-      {/* Save */}
-      <div className="mt-6 flex items-center gap-3">
-        <button
-          onClick={handleSave}
-          className="bg-indigo-500 text-white border-none px-7 py-2.5 rounded-md text-sm font-semibold cursor-pointer hover:bg-indigo-600"
-        >
-          Save All
-        </button>
-        {status && <span className="text-sm font-semibold text-emerald-600">{status}</span>}
-      </div>
     </div>
   )
 }

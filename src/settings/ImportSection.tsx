@@ -58,8 +58,8 @@ export function ImportSection({ onImport }: Props) {
 
   return (
     <section>
-      <h2 className="text-base font-semibold text-gray-700 mb-3">Import JSON Config</h2>
-      <p className="text-[13px] text-gray-500 mb-2">
+      <h2 className="text-base font-semibold text-zinc-700 dark:text-zinc-200 mb-3">Import JSON Config</h2>
+      <p className="text-[13px] text-zinc-500 dark:text-zinc-400 mb-2">
         Paste a JSON config to bulk-import providers. Supports opencode and custom formats.
       </p>
       <textarea
@@ -67,12 +67,12 @@ export function ImportSection({ onImport }: Props) {
         onChange={(e) => setJson(e.target.value)}
         rows={6}
         placeholder="Paste JSON here..."
-        className="w-full rounded-md border border-gray-300 px-2.5 py-2 text-xs font-mono resize-y focus:border-indigo-500 focus:outline-none mb-2"
+        className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500 px-2.5 py-2 text-xs font-mono resize-y focus:border-orange-500 focus:outline-none mb-2"
       />
       <div className="flex items-center gap-3">
         <button
           onClick={handleImport}
-          className="bg-gray-500 text-white border-none px-4 py-2 rounded-md text-sm font-semibold cursor-pointer hover:bg-gray-600"
+          className="bg-zinc-500 text-white border-none px-4 py-2 rounded-md text-sm font-semibold cursor-pointer hover:bg-zinc-600"
         >
           Import
         </button>
