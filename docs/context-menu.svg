@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="280" viewBox="0 0 520 280">
+  <defs>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    </style>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Page background -->
+  <rect width="520" height="280" fill="#ffffff"/>
+
+  <!-- Fake browser content -->
+  <text x="30" y="30" font-size="11" fill="#6b7280">en.wikipedia.org/wiki/Closure_(computer_programming)</text>
+  <text x="30" y="60" fill="#1a1a1a" font-size="17" font-weight="700">Closure (computer programming)</text>
+  <text x="30" y="90" fill="#333" font-size="14">In programming languages, a closure, also lexical</text>
+
+  <!-- Selected text -->
+  <rect x="30" y="100" width="440" height="42" rx="2" fill="#b4d7ff" opacity="0.5"/>
+  <text x="30" y="118" fill="#1a1a1a" font-size="14">closure or function closure, is a technique for</text>
+  <text x="30" y="136" fill="#1a1a1a" font-size="14">implementing lexically scoped name binding</text>
+
+  <text x="30" y="166" fill="#333" font-size="14">in a language with first-class functions.</text>
+
+  <!-- Context menu -->
+  <rect x="220" y="110" width="220" height="130" rx="8" fill="white" filter="url(#shadow)" stroke="#e5e7eb"/>
+
+  <text x="238" y="138" fill="#333" font-size="13">Copy</text>
+  <text x="238" y="158" fill="#333" font-size="13">Paste</text>
+  <line x1="228" y1="166" x2="432" y2="166" stroke="#e5e7eb"/>
+
+  <!-- Highlighted item -->
+  <rect x="228" y="172" width="204" height="28" rx="4" fill="#6366f1"/>
+  <text x="238" y="191" fill="white" font-size="13" font-weight="500">Send to aiom</text>
+
+  <text x="238" y="222" fill="#333" font-size="13">Ask aiom to explain</text>
+</svg>
